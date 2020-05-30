@@ -56,16 +56,16 @@
         }
       }
     },
-    "MyhandlerLogGroup": {
-      "Type": "AWS::Logs::LogGroup",
-      "Properties": {
-        "LogGroupName": "/aws/lambda/crudproject-dev-myhandler"
-      }
-    },
     "CreateLogGroup": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
         "LogGroupName": "/aws/lambda/crudproject-dev-create"
+      }
+    },
+    "ReadLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/crudproject-dev-read"
       }
     },
     "IamRoleLambdaExecution": {
@@ -158,46 +158,6 @@
         }
       }
     },
-    "MyhandlerLambdaFunction": {
-      "Type": "AWS::Lambda::Function",
-      "Properties": {
-        "Code": {
-          "S3Bucket": {
-            "Ref": "ServerlessDeploymentBucket"
-          },
-          "S3Key": "serverless/crudproject/dev/1590596295294-2020-05-27T16:18:15.294Z/crudproject.zip"
-        },
-        "FunctionName": "crudproject-dev-myhandler",
-        "Handler": "handler.myhandler",
-        "MemorySize": 1024,
-        "Role": {
-          "Fn::GetAtt": [
-            "IamRoleLambdaExecution",
-            "Arn"
-          ]
-        },
-        "Runtime": "nodejs12.x",
-        "Timeout": 6,
-        "Environment": {
-          "Variables": {
-            "tableName": "UserAccount"
-          }
-        }
-      },
-      "DependsOn": [
-        "MyhandlerLogGroup"
-      ]
-    },
-    "MyhandlerLambdaVersionujmidt3ZB72pmnI9RP7HWPG6IRXFuYVlHH1B35J0lqo": {
-      "Type": "AWS::Lambda::Version",
-      "DeletionPolicy": "Retain",
-      "Properties": {
-        "FunctionName": {
-          "Ref": "MyhandlerLambdaFunction"
-        },
-        "CodeSha256": "3tIO7/PHAXfnABBT08RbrvrL0ypHbrzxT4Y8DFNQy/E="
-      }
-    },
     "CreateLambdaFunction": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
@@ -205,7 +165,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/crudproject/dev/1590596295294-2020-05-27T16:18:15.294Z/crudproject.zip"
+          "S3Key": "serverless/crudproject/dev/1590816037231-2020-05-30T05:20:37.231Z/crudproject.zip"
         },
         "FunctionName": "crudproject-dev-create",
         "Handler": "addUser.create",
@@ -228,14 +188,54 @@
         "CreateLogGroup"
       ]
     },
-    "CreateLambdaVersionFm6YmYHGFhK1RKke03RcS1ohsw7JCdN6bZF6wh1aBw": {
+    "CreateLambdaVersioniHYJYmEbsiWVJOYnsz7VmVwOg5MlMzceVftLqT1hE": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "CreateLambdaFunction"
         },
-        "CodeSha256": "3tIO7/PHAXfnABBT08RbrvrL0ypHbrzxT4Y8DFNQy/E="
+        "CodeSha256": "xKpDDDBS/yNcXMqBksAexQYJVSgVP7kYgubuhYPV+qc="
+      }
+    },
+    "ReadLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "ServerlessDeploymentBucket"
+          },
+          "S3Key": "serverless/crudproject/dev/1590816037231-2020-05-30T05:20:37.231Z/crudproject.zip"
+        },
+        "FunctionName": "crudproject-dev-read",
+        "Handler": "getUser.read",
+        "MemorySize": 1024,
+        "Role": {
+          "Fn::GetAtt": [
+            "IamRoleLambdaExecution",
+            "Arn"
+          ]
+        },
+        "Runtime": "nodejs12.x",
+        "Timeout": 6,
+        "Environment": {
+          "Variables": {
+            "tableName": "UserAccount"
+          }
+        }
+      },
+      "DependsOn": [
+        "ReadLogGroup"
+      ]
+    },
+    "ReadLambdaVersionpftCaR2PoQWdq3eLpZG9bUKbsLO6iNWARp4Lo1ziE": {
+      "Type": "AWS::Lambda::Version",
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "FunctionName": {
+          "Ref": "ReadLambdaFunction"
+        },
+        "CodeSha256": "xKpDDDBS/yNcXMqBksAexQYJVSgVP7kYgubuhYPV+qc="
       }
     },
     "ApiGatewayRestApi": {
@@ -248,21 +248,6 @@
           ]
         },
         "Policy": ""
-      }
-    },
-    "ApiGatewayResourceHello": {
-      "Type": "AWS::ApiGateway::Resource",
-      "Properties": {
-        "ParentId": {
-          "Fn::GetAtt": [
-            "ApiGatewayRestApi",
-            "RootResourceId"
-          ]
-        },
-        "PathPart": "hello",
-        "RestApiId": {
-          "Ref": "ApiGatewayRestApi"
-        }
       }
     },
     "ApiGatewayResourceCreate": {
@@ -280,46 +265,28 @@
         }
       }
     },
-    "ApiGatewayMethodHelloOptions": {
-      "Type": "AWS::ApiGateway::Method",
+    "ApiGatewayResourceGet": {
+      "Type": "AWS::ApiGateway::Resource",
       "Properties": {
-        "AuthorizationType": "NONE",
-        "HttpMethod": "OPTIONS",
-        "MethodResponses": [
-          {
-            "StatusCode": "200",
-            "ResponseParameters": {
-              "method.response.header.Access-Control-Allow-Origin": true,
-              "method.response.header.Access-Control-Allow-Headers": true,
-              "method.response.header.Access-Control-Allow-Methods": true
-            },
-            "ResponseModels": {}
-          }
-        ],
-        "RequestParameters": {},
-        "Integration": {
-          "Type": "MOCK",
-          "RequestTemplates": {
-            "application/json": "{statusCode:200}"
-          },
-          "ContentHandling": "CONVERT_TO_TEXT",
-          "IntegrationResponses": [
-            {
-              "StatusCode": "200",
-              "ResponseParameters": {
-                "method.response.header.Access-Control-Allow-Origin": "'*'",
-                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
-                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,POST'"
-              },
-              "ResponseTemplates": {
-                "application/json": "#set($origin = $input.params(\"Origin\"))\n#if($origin == \"\") #set($origin = $input.params(\"origin\")) #end\n#if($origin.matches(\".+\")) #set($context.responseOverride.header.Access-Control-Allow-Origin = $origin) #end"
-              }
-            }
+        "ParentId": {
+          "Fn::GetAtt": [
+            "ApiGatewayRestApi",
+            "RootResourceId"
           ]
         },
-        "ResourceId": {
-          "Ref": "ApiGatewayResourceHello"
+        "PathPart": "get",
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayResourceGetIdVar": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Ref": "ApiGatewayResourceGet"
         },
+        "PathPart": "{id}",
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
         }
@@ -370,47 +337,49 @@
         }
       }
     },
-    "ApiGatewayMethodHelloPost": {
+    "ApiGatewayMethodGetIdVarOptions": {
       "Type": "AWS::ApiGateway::Method",
       "Properties": {
-        "HttpMethod": "POST",
+        "AuthorizationType": "NONE",
+        "HttpMethod": "OPTIONS",
+        "MethodResponses": [
+          {
+            "StatusCode": "200",
+            "ResponseParameters": {
+              "method.response.header.Access-Control-Allow-Origin": true,
+              "method.response.header.Access-Control-Allow-Headers": true,
+              "method.response.header.Access-Control-Allow-Methods": true
+            },
+            "ResponseModels": {}
+          }
+        ],
         "RequestParameters": {},
+        "Integration": {
+          "Type": "MOCK",
+          "RequestTemplates": {
+            "application/json": "{statusCode:200}"
+          },
+          "ContentHandling": "CONVERT_TO_TEXT",
+          "IntegrationResponses": [
+            {
+              "StatusCode": "200",
+              "ResponseParameters": {
+                "method.response.header.Access-Control-Allow-Origin": "'*'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET'"
+              },
+              "ResponseTemplates": {
+                "application/json": "#set($origin = $input.params(\"Origin\"))\n#if($origin == \"\") #set($origin = $input.params(\"origin\")) #end\n#if($origin.matches(\".+\")) #set($context.responseOverride.header.Access-Control-Allow-Origin = $origin) #end"
+              }
+            }
+          ]
+        },
         "ResourceId": {
-          "Ref": "ApiGatewayResourceHello"
+          "Ref": "ApiGatewayResourceGetIdVar"
         },
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
-        },
-        "ApiKeyRequired": false,
-        "AuthorizationType": "NONE",
-        "Integration": {
-          "IntegrationHttpMethod": "POST",
-          "Type": "AWS_PROXY",
-          "Uri": {
-            "Fn::Join": [
-              "",
-              [
-                "arn:",
-                {
-                  "Ref": "AWS::Partition"
-                },
-                ":apigateway:",
-                {
-                  "Ref": "AWS::Region"
-                },
-                ":lambda:path/2015-03-31/functions/",
-                {
-                  "Fn::GetAtt": [
-                    "MyhandlerLambdaFunction",
-                    "Arn"
-                  ]
-                },
-                "/invocations"
-              ]
-            ]
-          }
-        },
-        "MethodResponses": []
+        }
       }
     },
     "ApiGatewayMethodCreatePost": {
@@ -456,7 +425,50 @@
         "MethodResponses": []
       }
     },
-    "ApiGatewayDeployment1590596283659": {
+    "ApiGatewayMethodGetIdVarGet": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "GET",
+        "RequestParameters": {},
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceGetIdVar"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "ApiKeyRequired": false,
+        "AuthorizationType": "NONE",
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "ReadLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": []
+      }
+    },
+    "ApiGatewayDeployment1590816033280": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -465,18 +477,18 @@
         "StageName": "dev"
       },
       "DependsOn": [
-        "ApiGatewayMethodHelloOptions",
         "ApiGatewayMethodCreateOptions",
-        "ApiGatewayMethodHelloPost",
-        "ApiGatewayMethodCreatePost"
+        "ApiGatewayMethodGetIdVarOptions",
+        "ApiGatewayMethodCreatePost",
+        "ApiGatewayMethodGetIdVarGet"
       ]
     },
-    "MyhandlerLambdaPermissionApiGateway": {
+    "CreateLambdaPermissionApiGateway": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "FunctionName": {
           "Fn::GetAtt": [
-            "MyhandlerLambdaFunction",
+            "CreateLambdaFunction",
             "Arn"
           ]
         },
@@ -508,12 +520,12 @@
         }
       }
     },
-    "CreateLambdaPermissionApiGateway": {
+    "ReadLambdaPermissionApiGateway": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "FunctionName": {
           "Fn::GetAtt": [
-            "CreateLambdaFunction",
+            "ReadLambdaFunction",
             "Arn"
           ]
         },
@@ -552,16 +564,16 @@
         "Ref": "ServerlessDeploymentBucket"
       }
     },
-    "MyhandlerLambdaFunctionQualifiedArn": {
-      "Description": "Current Lambda function version",
-      "Value": {
-        "Ref": "MyhandlerLambdaVersionujmidt3ZB72pmnI9RP7HWPG6IRXFuYVlHH1B35J0lqo"
-      }
-    },
     "CreateLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "CreateLambdaVersionFm6YmYHGFhK1RKke03RcS1ohsw7JCdN6bZF6wh1aBw"
+        "Ref": "CreateLambdaVersioniHYJYmEbsiWVJOYnsz7VmVwOg5MlMzceVftLqT1hE"
+      }
+    },
+    "ReadLambdaFunctionQualifiedArn": {
+      "Description": "Current Lambda function version",
+      "Value": {
+        "Ref": "ReadLambdaVersionpftCaR2PoQWdq3eLpZG9bUKbsLO6iNWARp4Lo1ziE"
       }
     },
     "ServiceEndpoint": {

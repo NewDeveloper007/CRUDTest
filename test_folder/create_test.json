@@ -1,0 +1,11 @@
+
+{   "callid" : "value1",
+    "body": "{\"UserId\":\"user101\",\"FirstName\":\"anjan\",\"LastName\":\"lahiri\"}",
+    "requestcontext" : {
+        "Address" : {
+            "Apt" : {"S" : "myapt"},
+            "Street" : {"S" : "mystreet"},
+            "City" : {"S" : "mycity"}
+        }
+    }
+}

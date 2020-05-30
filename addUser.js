@@ -16,9 +16,10 @@ exports.create = (event, context, callback) => {
     TableName: process.env.tableName,
     Item: {
         'UserId': {"S": inputdata.UserId},
-        'FirstName': {"S": inputdata.FirstName}
- //      LastName: inputdata.LastName,
- //       Address: event.Address
+        'FirstName': {"S": inputdata.FirstName},
+        'LastName': {"S" : inputdata.LastName},
+        'Address': {"M" : event.requestcontext.Address},
+        'callid' : {"S" : event.callid}
     },
      ConditionExpression : 'attribute_not_exists(UserId)'
   };
